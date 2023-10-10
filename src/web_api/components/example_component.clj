@@ -2,7 +2,7 @@
   (:require [com.stuartsierra.component :as component]))
 
 (defrecord ExampleComponent
-           [config]
+  [config]
   component/Lifecycle
 
   (start [component]

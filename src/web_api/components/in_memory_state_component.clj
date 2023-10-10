@@ -2,7 +2,7 @@
   (:require [com.stuartsierra.component :as component]))
 
 (defrecord InMemoryStateComponent
-           [config]
+  [config]
   component/Lifecycle
 
   (start [component]

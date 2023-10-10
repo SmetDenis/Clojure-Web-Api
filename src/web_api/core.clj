@@ -8,12 +8,12 @@
 (defn web-api-system
   [config]
   (component/system-map
-   :example-component (example-component/new-expample-component config)
-   :in-memory-state-component (in-memory-state-component/new-in-memory-state-component config)
-   :pedestal-component (component/using
-                        (pedestal-component/new-pedestal-component config)
-                        [:example-component
-                         :in-memory-state-component])))
+    :example-component (example-component/new-expample-component config)
+    :in-memory-state-component (in-memory-state-component/new-in-memory-state-component config)
+    :pedestal-component (component/using
+                          (pedestal-component/new-pedestal-component config)
+                          [:example-component
+                           :in-memory-state-component])))
 
 (defn -main
   []
@@ -22,5 +22,5 @@
                    (component/start-system))]
     (println "It's alive")
     (.addShutdownHook
-     (Runtime/getRuntime)
-     (new Thread #(component/stop-system system)))))
+      (Runtime/getRuntime)
+      (new Thread #(component/stop-system system)))))
