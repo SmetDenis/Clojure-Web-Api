@@ -1,10 +1,10 @@
 (ns component.web-api.api-test
-  (:require [clojure.string :as str]
+  (:require [clj-http.client :as client]
+            [clojure.string :as str]
             [clojure.test :refer :all]
             [com.stuartsierra.component :as component]
-            [web-api.core :as core]
-            [clj-http.client :as client]
-            [web-api.components.pedestal-component :refer [url-for]])
+            [web-api.components.pedestal-component :refer [url-for]]
+            [web-api.core :as core])
   (:import (java.net ServerSocket)))
 
 (defmacro with-system

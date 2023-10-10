@@ -1,7 +1,7 @@
 (ns web-api.components.pedestal-component
   (:require [com.stuartsierra.component :as component]
-            [io.pedestal.http.route :as route]
             [io.pedestal.http :as http]
+            [io.pedestal.http.route :as route]
             [io.pedestal.interceptor :as interceptor]))
 
 (defn response

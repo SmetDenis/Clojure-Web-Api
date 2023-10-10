@@ -1,9 +1,9 @@
 (ns web-api.core
   (:require [com.stuartsierra.component :as component]
-            [web-api.config :as config]
             [web-api.components.example-component :as example-component]
+            [web-api.components.in-memory-state-component :as in-memory-state-component]
             [web-api.components.pedestal-component :as pedestal-component]
-            [web-api.components.in-memory-state-component :as in-memory-state-component]))
+            [web-api.config :as config]))
 
 (defn web-api-system
   [config]
