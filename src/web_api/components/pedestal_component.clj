@@ -21,7 +21,8 @@
 
 (def get-todo-handler
   {:name  :get-todo-handler
-   :enter (fn [{:keys [dependencies] :as context}]
+   :enter (fn [{:keys [dependencies]
+                :as   context}]
             (let [request  (:request context)
                   response (ok (get-todo-by-id dependencies
                                                (-> request
@@ -29,7 +30,6 @@
                                                    :todo-id
                                                    (parse-uuid))))]
               (assoc context :response response)))})
-
 
 (defn respond-hello
   [request]

@@ -29,8 +29,7 @@
 (deftest basic-testing-tools-test
   (with-system
     [sut (core/web-api-system {:server {:port (get-free-local-port)}})]
-    (is (not (= (get-free-local-port) (get-free-local-port))))
-    ))
+    (is (not (= (get-free-local-port) (get-free-local-port))))))
 
 (deftest greeting-test
   (with-system
@@ -60,5 +59,4 @@
                 :status 200}
                (-> (sur->url sut (url-for :get-todo {:path-params {:todo-id (random-uuid)}}))
                    (client/get)
-                   (select-keys [:body :status])))))
-      )))
+                   (select-keys [:body :status]))))))))

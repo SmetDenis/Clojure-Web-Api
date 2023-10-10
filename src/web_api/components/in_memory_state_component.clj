@@ -1,9 +1,8 @@
 (ns web-api.components.in-memory-state-component
   (:require [com.stuartsierra.component :as component]))
 
-
 (defrecord InMemoryStateComponent
-  [config]
+           [config]
   component/Lifecycle
 
   (start [component]
