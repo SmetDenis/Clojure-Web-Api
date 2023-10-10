@@ -11,7 +11,7 @@
    :headers nil})
 
 (def ok (partial response 200))
-(def not-found (partial response 404))
+; (def not-found (partial response 404))
 
 (defn get-todo-by-id
   [{:keys [in-memory-state-component]} todo-id]
@@ -32,7 +32,7 @@
               (assoc context :response response)))})
 
 (defn respond-hello
-  [request]
+  []
   {:status 200
    :body   "Hello, world!"})
 
