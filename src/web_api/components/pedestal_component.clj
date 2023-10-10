@@ -1,7 +1,8 @@
 (ns web-api.components.pedestal-component
   (:require [com.stuartsierra.component :as component]
             [io.pedestal.http.route :as route]
-            [io.pedestal.http :as http]))
+            [io.pedestal.http :as http]
+            [io.pedestal.interceptor :as interceptor]))
 
 (defn response
   [status body]
@@ -11,13 +12,22 @@
 
 (def ok (partial response 200))
 
+(defn get-todo-by-id
+  [{:keys [in-memory-state-component]} todo-id]
+  (->> @(:state-atom in-memory-state-component)
+       (filter (fn [todo] (= todo-id (:id todo))))
+       (first)))
+
 (def get-todo-handler
-  {:name :echo
-   :enter
-   (fn [context]
-     (let [request  (:request context)
-           response (ok context)]
-       (assoc context :response response)))})
+  {:name  :echo
+   :enter (fn [{:keys [dependencies] :as context}]
+            (let [request  (:request context)
+                  response (ok (get-todo-by-id dependencies
+                                               (-> request
+                                                   :path-params
+                                                   :todo-id
+                                                   (parse-uuid))))]
+              (assoc context :response response)))})
 
 (defn respond-hello
   [request]
@@ -29,8 +39,16 @@
     #{["/greet" :get respond-hello :route-name :greet]
       ["/todo/:todo-id" :get get-todo-handler :route-name :get-todo]}))
 
+(defn inject-dependencies
+  [dependencies]
+  (interceptor/interceptor
+    {:name  ::inject-dependecies
+     :enter (fn [conxet] (assoc conxet :dependencies dependencies))}))
+
 (defrecord PedestalComponent
-  [config example-component]
+  [config
+   example-component
+   in-memory-state-component]
   component/Lifecycle
 
   (start [component]
@@ -39,6 +57,8 @@
                       ::http/type   :jetty
                       ::http/join?  false
                       ::http/port   (-> config :server :port)}
+                     (http/default-interceptors)
+                     (update ::http/interceptors concat [(inject-dependencies component)])
                      (http/create-server)
                      (http/start))]
       (assoc component :server server)))

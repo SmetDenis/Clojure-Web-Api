@@ -22,6 +22,18 @@
              (client/get)
              (select-keys [:body :status]))))))
 
+(comment
+  [{:id    (random-uuid)
+    :name  "My Todo list"
+    :items [{:id     (random-uuid)
+             :name   "Learn Clojure"
+             :status :created
+             }]}
+   {:id    (random-uuid)
+    :name  "Draft list"
+    :items []}]
+  )
+
 (deftest get-todo-test
   (let [todo-id (random-uuid)]
     (with-system
@@ -32,6 +44,3 @@
                (str "http://localhost:" 8088 "/todo/" todo-id)
                (client/get)
                (select-keys [:body :status])))))))
-
-(deftest a-simple-api-test
-  (is (= 1 1)))
