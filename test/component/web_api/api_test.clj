@@ -22,25 +22,17 @@
              (client/get)
              (select-keys [:body :status]))))))
 
-(comment
-  [{:id    (random-uuid)
-    :name  "My Todo list"
-    :items [{:id     (random-uuid)
-             :name   "Learn Clojure"
-             :status :created
-             }]}
-   {:id    (random-uuid)
-    :name  "Draft list"
-    :items []}]
-  )
-
 (deftest get-todo-test
-  (let [todo-id (random-uuid)]
+  (let [todo-id-1 (random-uuid)
+        todo-1    {:id    todo-id-1
+                   :name  "Todo list name"
+                   :items [{:id   (random-uuid)
+                            :name "Action item 1"}]}]
     (with-system
       [sut (core/web-api-system {:server {:port 8088}})]
-      (is (= {:body   "Hello, world!"
+      (reset! (-> sut :in-memory-state-component :state-atom) [todo-1])
+      (is (= {:body   (pr-str todo-1)
               :status 200}
-             (->
-               (str "http://localhost:" 8088 "/todo/" todo-id)
-               (client/get)
-               (select-keys [:body :status])))))))
+             (-> (str "http://localhost:" 8088 "/todo/" todo-id-1)
+                 (client/get)
+                 (select-keys [:body :status])))))))

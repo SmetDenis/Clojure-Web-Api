@@ -11,6 +11,7 @@
    :headers nil})
 
 (def ok (partial response 200))
+(def not-found (partial response 404))
 
 (defn get-todo-by-id
   [{:keys [in-memory-state-component]} todo-id]
@@ -19,7 +20,7 @@
        (first)))
 
 (def get-todo-handler
-  {:name  :echo
+  {:name  :get-todo-handler
    :enter (fn [{:keys [dependencies] :as context}]
             (let [request  (:request context)
                   response (ok (get-todo-by-id dependencies
@@ -28,6 +29,7 @@
                                                    :todo-id
                                                    (parse-uuid))))]
               (assoc context :response response)))})
+
 
 (defn respond-hello
   [request]
@@ -38,6 +40,7 @@
   (route/expand-routes
     #{["/greet" :get respond-hello :route-name :greet]
       ["/todo/:todo-id" :get get-todo-handler :route-name :get-todo]}))
+
 
 (defn inject-dependencies
   [dependencies]

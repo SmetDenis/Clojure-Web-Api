@@ -8,11 +8,11 @@
 
   (start [component]
     (println "Starting InMemoryStateComponent")
-    (assoc component :state :started))
+    (assoc component :state-atom (atom [])))
 
   (stop [component]
     (println "Stopping InMemoryStateComponent")
-    (assoc component :state nil)))
+    (assoc component :state-atom nil)))
 
 (defn new-in-memory-state-component
   [config]
